@@ -40,7 +40,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       const aiResult = await triggerTailorAI(extractedResumeText, jobDesc)
 
       const result = await resumes.insertOne({
-        jobTitle: jobDesc.slice(0, 100),
+        jobDesc: jobDesc,
         tailoredResume: aiResult.tailoredResume,
         createdAt: new Date(),
       })

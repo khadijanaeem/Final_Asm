@@ -1,13 +1,14 @@
 // pages/api/tailor.ts
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { triggerTailorAI } from '../../lib/n8nWebhook'
-import { resumes } from '../../lib/mongodb'
+import { getCollections } from '../../lib/mongodb'
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const { resume, jobDesc } = req.body
 
   try {
     const result = await triggerTailorAI(resume, jobDesc)
+    const { resumes } = await getCollections()
 
     await resumes.insertOne({
       tailoredText: result.text || result.result || 'No result returned',

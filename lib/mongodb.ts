@@ -24,12 +24,15 @@ clientPromise = global._mongoClientPromise
 
 export async function getDatabase(): Promise<Db> {
   const client = await clientPromise
-  return client.db('resume_db')
+  
+const db = client.db('resume_db')
+  return db
 }
 
 export async function getCollections() {
   const db = await getDatabase()
   return {
+    
     resumes: db.collection('resumes'),
     jobDescriptions: db.collection('job_descriptions'),
   }
