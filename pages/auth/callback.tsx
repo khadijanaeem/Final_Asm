@@ -13,17 +13,20 @@ export default function Callback() {
 
   useEffect(() => {
     const handleMagicLinkLogin = async () => {
-      const { error } = await supabase.auth.getSession();
+      const hash = window.location.hash;
 
-      // If there's no valid session, attempt to parse it from the URL fragment
-      if (error || !supabase.auth.getUser()) {
-        await supabase.auth.exchangeCodeForSession(window.location.hash);
+      // Exchange hash fragment for a session
+      const { error } = await supabase.auth.exchangeCodeForSession(hash);
+
+      if (error) {
+        console.error("Session exchange failed:", error.message);
+        return router.push("/login"); // Optional: Redirect on error
       }
 
-      // ✅ Optionally clear the URL hash
+      // Clear the hash from the URL
       window.history.replaceState({}, document.title, "/dashboard");
 
-      // ✅ Redirect to a dashboard or home page
+      // Redirect after successful login
       router.push("/dashboard");
     };
 
