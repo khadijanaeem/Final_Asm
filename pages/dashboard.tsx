@@ -100,10 +100,23 @@ export default function Dashboard() {
   }
 
   if (loading) return <p className={styles.container}>Loading...</p>
+const Blobs = () => (
+  <div className={styles.blobContainer}>
+    <svg className={styles.blob} viewBox="0 0 200 200">
+      <path fill="#93c5fd" d="M47.6,-52.4C59.6,-38.2,66.6,-19.1,65.3,-1.3C64,16.4,54.5,32.9,42.5,47.2C30.4,61.5,15.2,73.7,-1.5,75.3C-18.1,76.8,-36.3,67.7,-51.6,54.1C-66.9,40.6,-79.4,22.3,-78.2,4.6C-77.1,-13.1,-62.4,-29.1,-47.8,-44.1C-33.3,-59.2,-16.7,-73.2,0.5,-73.7C17.7,-74.2,35.3,-61.7,47.6,-52.4Z" transform="translate(100 100)" />
+    </svg>
+    <svg className={`${styles.blob} ${styles.blob2}`} viewBox="0 0 200 200">
+      <path fill="#bfdbfe" d="M37.6,-48.4C49.6,-36.2,60.6,-24.6,66.2,-9.9C71.8,4.8,72.1,23.5,63.8,36.5C55.6,49.4,38.8,56.6,21.5,61.1C4.2,65.5,-13.6,67.3,-27.1,60.6C-40.6,53.9,-49.8,38.8,-58.2,22.3C-66.5,5.9,-73.9,-12,-68.7,-25.3C-63.5,-38.5,-45.7,-47,-29.2,-56.8C-12.7,-66.7,2.5,-77.8,16.7,-74.3C30.9,-70.8,43.3,-52.9,37.6,-48.4Z" transform="translate(100 100)" />
+    </svg>
+  </div>
+)
 
   return (
     <div className={styles.container}>
-      <h1 className={styles.heading}>Welcome, {email}</h1>
+      <Blobs/>
+      <div>className={styles.glass}
+
+      <h1 className={styles.heading}>SkillSync</h1>
 
       <section>
         <h2 className={styles.subheading}>Upload Resume PDF</h2>
@@ -163,5 +176,7 @@ export default function Dashboard() {
         )}
       </section>
     </div>
+            
+      </div>
   )
 }
