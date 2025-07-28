@@ -9,6 +9,13 @@
   background: linear-gradient(135deg, #5c6ac4, #9f7aea, #f472b6);
   color: white;
 }
+.subtext {
+  font-size: 1rem;
+  color: #d1d5db;
+  margin-top: 0.5rem;
+  text-align: center;
+}
+
 
 .card {
   background: rgba(255, 255, 255, 0.2);
