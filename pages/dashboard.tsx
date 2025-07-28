@@ -31,7 +31,6 @@ export default function Dashboard() {
         setTimeout(() => router.push('/login'), 500)
         return
       }
-      setEmail(session.user.email || '')
       await fetchResumes()
       setLoading(false)
     }
