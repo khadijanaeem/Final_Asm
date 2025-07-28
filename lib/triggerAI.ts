@@ -19,6 +19,8 @@ export async function triggerTailorAI(resume: string, jobDesc: string) {
 
     const data = await response.json();
 
+    console.log('[triggerTailorAI] Response:', data)
+
     if (!data.tailoredResume) {
       throw new Error('Missing tailoredResume in response from AI.');
     }

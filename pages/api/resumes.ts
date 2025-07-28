@@ -12,11 +12,12 @@ export const config = {
   },
 }
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-
   const { resumes } = await getCollections()
 
   if (req.method === 'POST') {
     try {
+      console.log('[POST /api/resumes] Starting request')
+
       const { fields, files } = await new Promise<{ fields: any; files: any }>((resolve, reject) => {
         const form = formidable({ multiples: false })
         form.parse(req, (err, fields, files) => {
@@ -27,39 +28,45 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
       const jobDesc = fields.jobDesc?.[0]
       const uploadedFile = files.resume?.[0]
+      console.log('Parsed form data:', { jobDesc, uploadedFile })
 
       if (!jobDesc || !uploadedFile) {
-        res.status(400).json({ message: 'Missing job description or resume file' })
-        return
+        return res.status(400).json({ message: 'Missing job description or resume file' })
       }
 
       const fileBuffer = fs.readFileSync(uploadedFile.filepath)
       const pdfData = await pdfParse(fileBuffer)
       const extractedResumeText = pdfData.text
 
+      console.log('Extracted Resume Text Length:', extractedResumeText.length)
+
       const aiResult = await triggerTailorAI(extractedResumeText, jobDesc)
+      console.log('AI Response:', aiResult)
+
+      if (!aiResult || !aiResult.tailoredResume) {
+        throw new Error('AI did not return a tailoredResume')
+      }
 
       const result = await resumes.insertOne({
-        jobDesc: jobDesc,
+        jobDesc,
         tailoredResume: aiResult.tailoredResume,
         createdAt: new Date(),
       })
-      
-console.log('MongoDB Insert Result:', result)
 
-      res.status(201).json({ message: 'Success', id: result.insertedId })
-    } catch (err) {
-      console.error('[POST /api/resumes]', err)
-      res.status(500).json({ message: 'Error processing request' })
+      console.log('Insert Result:', result)
+      return res.status(201).json({ message: 'Success', id: result.insertedId })
+
+    } catch (err: any) {
+      console.error('[POST /api/resumes] Error:', err)
+      return res.status(500).json({ message: err?.message || 'Unknown error' })
     }
-    return // ✅ Important to end here
   }
 
   if (req.method === 'GET') {
     const all = await resumes.find().sort({ createdAt: -1 }).toArray()
-    res.status(200).json(all)
-    return
+    return res.status(200).json(all)
   }
 
-  res.status(405).json({ message: 'Method Not Allowed' })
+  return res.status(405).json({ message: 'Method Not Allowed' })
 }
+
