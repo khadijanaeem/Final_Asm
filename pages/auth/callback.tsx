@@ -16,7 +16,7 @@ export default function Callback() {
       const hash = window.location.hash;
 
       // Exchange hash fragment for a session
-      const { error } = await supabase.auth.exchangeCodeForSession(hash);
+      const { error } = await supabase.auth.exchangeCodeForSession(window.location.hash);
 
       if (error) {
         console.error("Session exchange failed:", error.message);

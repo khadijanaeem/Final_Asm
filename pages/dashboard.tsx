@@ -24,6 +24,9 @@ export default function Dashboard() {
   useEffect(() => {
     const getUserData = async () => {
       const { data: { session }, error } = await supabase.auth.getSession()
+      console.log("SESSION DATA", session)
+    console.log("SESSION ERROR", error)
+
       if (!session || error) {
         setTimeout(() => router.push('/login'), 500)
         return
@@ -36,10 +39,21 @@ export default function Dashboard() {
   }, [router])
 
   const fetchResumes = async () => {
+  try {
     const res = await fetch('/api/resumes')
-    const data = await res.json()
+    const text = await res.text()
+    console.log("Resume fetch response:", text)
+
+    if (!res.ok) {
+      throw new Error(text)
+    }
+
+    const data = JSON.parse(text)
     setResumes(data)
+  } catch (err) {
+    console.error("Resume fetch failed:", err)
   }
+}
 
   const downloadResume = (resume: ResumeEntry) => {
     const blob = new Blob([resume.tailoredResume], { type: 'text/plain' })
