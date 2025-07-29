@@ -114,7 +114,7 @@ const Blobs = () => (
   return (
     <div className={styles.container}>
       <Blobs/>
-      <div>className={styles.glass}
+      <div className={styles.glass}>
 
       <h1 className={styles.heading}>SkillSync</h1>
 
