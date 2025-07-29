@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import supabase from '../lib/supabaseClient'
 import styles from '../styles/Dashboard.module.css'
-
+import Link  from 'next/link'
 type ResumeEntry = {
   _id: string
   jobTitle: string
@@ -155,26 +155,12 @@ const Blobs = () => (
       <hr className={styles.divider} />
 
       <section>
-        <h2 className={styles.subheading}>Your Tailored Resumes</h2>
-        {resumes.length === 0 ? (
-          <p>No resumes found.</p>
-        ) : (
-          <ul className={styles.resumeList}>
-            {resumes.map((resume) => (
-              <li key={resume._id} className={styles.resumeItem}>
-                <p><strong>{resume.jobTitle}</strong></p>
-                <p style={{ fontSize: '0.85rem', color: '#666' }}>
-                  Created at: {new Date(resume.createdAt).toLocaleString()}
-                </p>
-                <div className={styles.resumeText}>{resume.tailoredResume}</div>
-                <button onClick={() => downloadResume(resume)} className={styles.button}>
-                  Download
-                </button>
-              </li>
-            ))}
-          </ul>
-        )}
-      </section>
+  <h2 className={styles.subheading}>Your Tailored Resumes</h2>
+  <p>View your previous tailored resumes:</p>
+  <Link href="/resumesPage" className={styles.iconLink}>
+    📄 View Resumes
+  </Link>
+</section>
     </div>
             
       </div>
