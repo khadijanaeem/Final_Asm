@@ -129,7 +129,7 @@ const Blobs = () => (
               onChange={(e) => setJobDesc(e.target.value)}
               className={styles.textarea}
               required
-              disabled={formLoading}
+              disabled={false}
             />
           </div>
 
